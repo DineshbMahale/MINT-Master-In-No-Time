@@ -23,6 +23,7 @@ import { PracticeProblemSuggestor } from './PracticeProblemSuggestor'
 import { StudyPlanManager } from './StudyPlanManager'
 import { STUDY_PLANS } from '@/lib/data'
 import type { SkillLevel, Topic, StudyPlan } from '@/lib/types'
+import { ThemeToggle } from './ThemeToggle'
 
 type View = 'study' | 'progress' | 'practice'
 
@@ -83,6 +84,11 @@ export function StudyReelsClient() {
     setSkillLevel(null)
     setStudyPlan([])
     setCompletedTopics([])
+    // Also reset theme to system preference
+    document.documentElement.classList.remove("dark")
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      document.documentElement.classList.add("dark")
+    }
   }
 
   const memoizedStudyPlan = useMemo(() => studyPlan, [studyPlan])
@@ -181,7 +187,8 @@ export function StudyReelsClient() {
       <SidebarInset className="flex flex-col h-screen">
          <header className="flex items-center justify-between p-2 border-b">
            <SidebarTrigger />
-           <div className="flex items-center gap-4">
+           <div className="flex items-center gap-2">
+              <ThemeToggle />
               <span className="text-sm text-muted-foreground">{skillLevel}</span>
               <Avatar className="h-9 w-9">
                 <AvatarImage src="https://placehold.co/100x100.png" alt="User" data-ai-hint="person user"/>
